@@ -1,27 +1,52 @@
 <?php
 
+// First of all, add Apper files.
 require_once ".." . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "main.php";
 
-function jarvis_main( $app ) { var_dump( $app->get("name") ); }
+//Now create Apper Object.
+$app = new Apper\Application(
 
-staticApper( "Jarvis", "jarvis_main", array("name"=>"jarvis") );
+	// This function is running when call application run function.
+	// $app which is function argument is application object.
+	// Run function is automatically add $app argument to main function.
+	function( $app ) {
 
-Jarvis::run();
+		// Call $app's function.
+		// This function isn't exist but we can create one, just wait :)
+		$app->sayHi( $app );
 
-$app = apper( function( $app ) { var_dump( $app->get("name") ); }, array("name" => "app") );
+		// return $app's version info.
+		return $app->version();
+	},
 
-$app->run();
+	array(
+		// This bind's default value is "0.0.0",
+		// But now we define this bind.
+		"version" => "0.0.1",
 
-Jarvis::setPatch( "hi", function() {
-	echo Jarvis::get('name') . " said HI!" . PHP_EOL;
+		// This bind's default value is "Apper\Application",
+		// But now we define this bind.
+		"name" => "firstApp",
+
+		// Create another bind which name is "mySecret".
+		"mySecret" => "I like her, but Shhh, this is secret! :)"
+		)
+);
+
+// Now patch $app for "sayHi" function
+// Because we need this function for main function, remember? :)
+$app->setPatch( "sayHi", function( $app ) {
+
+	// Echo $app name which binded value of name.
+	echo $app->get("name") . " said 'Hi!'<br/>";
 } );
 
-Jarvis::setPatch( "count", function( $count ) {
-	for ($i=0; $i < $count ; $i++) { 
-		echo $i . PHP_EOL;
-	}
-} );
+// Now run $app.
+// Run function return $app's version info.
+$version = $app->run();
 
-Jarvis::hi();
+// Echo $version.
+echo "Application's version is " . $version . "<br/>";
 
-Jarvis::count( 10 );
+// Get "mySecret" from $app then echo this.
+echo "My secret is: " . $app->get( "mySecret" ) . "<br/>";
