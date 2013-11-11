@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This example is about create Apper\Application with manually
+ * and use some simple functions.
+ */
+
 // First of all, add Apper files.
 require_once ".." . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "main.php";
 
@@ -12,8 +17,8 @@ $app = new Apper\Application(
 	function( $app ) {
 
 		// Call $app's function.
-		// This function isn't exist but we can create one, just wait :)
-		$app->sayHi( $app );
+		// This function isn't exist but we will create one, just wait :)
+		$app->sayHi();
 
 		// return $app's version info.
 		return $app->version();
@@ -33,16 +38,17 @@ $app = new Apper\Application(
 		)
 );
 
-// Now patch $app for "sayHi" function
+// Now patch $app for "sayHi" function.
 // Because we need this function for main function, remember? :)
 $app->setPatch( "sayHi", function( $app ) {
 
 	// Echo $app name which binded value of name.
 	echo $app->get("name") . " said 'Hi!'<br/>";
+	
 } );
 
 // Now run $app.
-// Run function return $app's version info.
+// Run function will return $app's version info.
 $version = $app->run();
 
 // Echo $version.

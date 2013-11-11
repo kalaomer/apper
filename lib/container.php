@@ -61,6 +61,7 @@ class Container extends EventManager {
 
 		$func = $this->get( $key );
 
+		// Add $this to binded function arguments.
 		array_unshift( $args, $this );
 
 		if (is_callable($func)) {
@@ -106,6 +107,9 @@ class Container extends EventManager {
 
 	function __call( $name, $args = array() )
 	{
+		// Add $this to binded function arguments
+		array_unshift($args, $this);
+		
 		if ( $this->hasPatch( $name ) )
 		{
 			return call_user_func_array( $this->getPatch( $name ) , $args);
