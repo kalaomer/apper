@@ -19,7 +19,7 @@ function apper( $mainFunction, array $binds = array() )
 }
 
 /**
- * Create Class whitch extends Apper\StaticApplication.
+ * Create Class which extends Apper\StaticApplication.
  */
 function staticApper( $staticName, $mainFunction, $binds = array() )
 {
