@@ -8,10 +8,6 @@ class EventManager {
 
 	/**
 	 * Creating Event Node.
-	 * @var $cat string
-	 * @var $func callable
-	 * @var $args array
-	 * @var $one boolean
 	 */
 	Public function on( $cat, $func, $args = array(), $one = false )
 	{
@@ -30,11 +26,17 @@ class EventManager {
 		return $this->on( $cat, $func, $args, true );
 	}
 
+	/**
+	 * Return true if this event is added.
+	 */
 	Public function isEvent( $cat ) {
 		return isset( $this->events[ $cat ] );
 	}
 
-	Public function killEvent( $cat ) {
+	/**
+	 * Delete event.
+	 */
+	Public function delEvent( $cat ) {
 		if ( $this->isEvent( $cat ) )
 		{
 			unset( $this->events[ $cat ] );

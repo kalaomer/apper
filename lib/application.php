@@ -4,6 +4,9 @@ namespace Apper;
 
 class Application extends Container {
 
+	/**
+	 * Create main function, and main binds.
+	 */
 	function __construct( $mainFunction, array $binds = array() )
 	{
 
@@ -16,20 +19,29 @@ class Application extends Container {
 			 );
 
 		foreach ($binds as $key => $value) {
-			$this->bind( $key, $value );
+			$this->set( $key, $value );
 		}
 	}
 
+	/**
+	 * Return version value from binds.
+	 */
 	Public function version()
 	{
 		return $this->get( "version" );
 	}
 
+	/**
+	 * Call 'main_function' bind.
+	 */
 	Public function run( $args = array() )
 	{
 		return $this->call( 'main_function', $args );
 	}
 
+	/**
+	 * Call 'boot_function' bind.
+	 */
 	Public function boot( $args = array() )
 	{
 		return $this->call( 'boot_function', $args );
