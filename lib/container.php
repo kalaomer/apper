@@ -100,7 +100,7 @@ class Container extends EventManager {
 	 * Return patched function.
 	 */
 	Public function getPatch( $name ) {
-		if ( $this->hasPatch( $name ) ) {
+		if ( $this->patched( $name ) ) {
 			return $this->monkeyPatches[ $name ];
 		}
 	}
@@ -110,7 +110,7 @@ class Container extends EventManager {
 	 */
 	Public function delPatch( $name )
 	{
-		if ( $this->hasPatch( $name ) )
+		if ( $this->patched( $name ) )
 		{
 			unset( $this->monkeyPatches[ $name ] );
 		}
@@ -127,7 +127,7 @@ class Container extends EventManager {
 			return true;
 		}
 
-		if ($val != null) 
+		if ($name != null) 
 		{
 			$this->monkeyPatches[ $name ] = $func;
 			return true;
