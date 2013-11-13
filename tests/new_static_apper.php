@@ -1,7 +1,7 @@
 <?php
 
 // First of all, add Apper files.
-require_once ".." . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "main.php";
+require_once ".." . DIRECTORY_SEPARATOR . "index.php";
 
 // Define new class which extends Apper\StaticApplication.
 class App extends Apper\StaticApplication {};

@@ -6,7 +6,7 @@
  */
 
 // First of all, add Apper files.
-require_once ".." . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "main.php";
+require_once ".." . DIRECTORY_SEPARATOR . "index.php";
 
 //Now create Apper Object.
 $app = new Apper\Application(

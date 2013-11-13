@@ -8,4 +8,4 @@
  */
 
 // Include Apper files.
-require_once __DIR__ . DIRECTORY_SPARATOR . "lib" . DIRECTORY_SPARATOR . "main.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "main.php";
