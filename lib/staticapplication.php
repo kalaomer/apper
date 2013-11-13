@@ -6,6 +6,9 @@ class StaticApplication {
 
 	Public static $app;
 
+	/**
+	 * Create Apper\Application object for Apper\StaticApplication.
+	 */
 	Public static function init( $mainFunction, array $binds = array() )
 	{
 		return self::$app = new Application( $mainFunction, $binds );
