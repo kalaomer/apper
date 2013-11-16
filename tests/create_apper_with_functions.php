@@ -41,3 +41,10 @@ staticApp::setPatch( "sayHitoNewApp", function( $app ) use ($newApp) {
 $newApp->run();
 
 staticApp::run();
+
+// And last, Create new Apper with Namespace.
+staticApper( "NameArea\\Apper", function( $app ) {
+	echo $app->get( "name" ) . " said 'HI!' to everyone<br />";
+} );
+
+NameArea\Apper::run();

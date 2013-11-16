@@ -23,8 +23,23 @@ function apper( $mainFunction, array $binds = array() )
  */
 function staticApper( $staticName, $mainFunction, $binds = array() )
 {
+	$nameParts = explode("\\", $staticName);
 
-	eval( 'class ' . $staticName . ' extends Apper\StaticApplication {}' );
+	$className = array_pop( $nameParts );
+
+	if ( count($nameParts) < 1 )
+	{
+		$nameSpace = null;
+	}
+	else
+	{
+		$nameSpace = implode("\\", $nameParts);
+	}
+
+	eval(
+		($nameSpace != null ? 'namespace ' . $nameSpace . ";" . PHP_EOL : "") .
+		'class ' . $className . ' extends \Apper\StaticApplication {}'
+		);
 
 	$binds = array_merge( array("name"=>$staticName), $binds );
 
