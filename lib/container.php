@@ -127,7 +127,7 @@ class Container extends EventManager {
 			return true;
 		}
 
-		if ($name != null) 
+		if ($func != null) 
 		{
 			$this->monkeyPatches[ $name ] = $func;
 			return true;
