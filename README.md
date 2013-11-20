@@ -205,7 +205,9 @@ $app->sayHi();
 
 Burada dikkat edilmesi gereken nokta, ilk argümanın Apper nesnesi olduğudur. Ayrıca fonksiyona ek olarak başka argümanlarda eklenebilir.
 
-#### ```killPatch
+#### ```delPatch``` ile Pacth Silme
+
+
 
 ### Çalışma mantığı
 
