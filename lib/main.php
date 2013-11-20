@@ -37,8 +37,11 @@ function staticApper( $staticName, $mainFunction, $binds = array() )
 	}
 
 	eval(
-		($nameSpace != null ? 'namespace ' . $nameSpace . ";" . PHP_EOL : "") .
-		'class ' . $className . ' extends \Apper\StaticApplication {}'
+		($nameSpace != null ?
+			'namespace ' . $nameSpace . ";" . PHP_EOL
+				:
+			"") .
+				'class ' . $className . ' extends \Apper\StaticApplication {}'
 		);
 
 	$binds = array_merge( array("name"=>$staticName), $binds );
