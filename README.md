@@ -25,8 +25,8 @@ Yeni bir Apper nesnesi oluşturur. Apper\Application'dan nesne oluşturur.
 
 ```apper( $mainFunction, $binds = array() )```
 
-```$mainFunction```: Apper çalıştırılacağı zaman çalışacak Callable.
-```$binds```: Apper nesnesine otomatik verilecek Bind'ler.
+- ```$mainFunction```: Apper çalıştırılacağı zaman çalışacak Callable.
+- ```$binds```: Apper nesnesine otomatik verilecek Bind'ler.
 
 Örnek:
 ```
@@ -44,9 +44,9 @@ Static fonksiyonlara sahip bir Apper Class'ı oluşturur. Oluşturulan Class App
 
 ```staticApper( $className, $mainFunction, $binds = array() )```
 
-```$className```: Oluşturulacak Class'ın ismi. Bu Class eğer belli bir Namespace'in altında oluşturulmak istenirse ```namespace\\foo``` şeklinde doldurulmalıdır.
-```$mainFunction```: Apper çalıştırılacağı zaman çalışacak Callable.
-```$binds```: Apper nesnesine otomatik verilecek Bind'ler.
+- ```$className```: Oluşturulacak Class'ın ismi. Bu Class eğer belli bir Namespace'in altında oluşturulmak istenirse ```namespace\\foo``` şeklinde doldurulmalıdır.
+- ```$mainFunction```: Apper çalıştırılacağı zaman çalışacak Callable.
+- ```$binds```: Apper nesnesine otomatik verilecek Bind'ler.
 
 ### Apper'ı Static veya Nesne ile Kontrol Etmek Arasındaki Fark
 
@@ -64,8 +64,8 @@ Bind'ler Apper nesnesinde tutulan değerlerdir. Bu değerler istenildiği gibi o
 
 ```set( $key, $value )```
 
-$key: Bind'in çağrılacağı zaman kullanılan anahtar.
-$value: Bind çağrıldığında dönülecek değer.
+- ```$key```: Bind'in çağrılacağı zaman kullanılan anahtar.
+- ```$value```: Bind çağrıldığında dönülecek değer.
 
 Örnek:
 ```
@@ -78,12 +78,12 @@ $app->set( "pass", 1234 );
 
 ```get( $key )```
 
+- ```$key```: Bind keyi.
+
 Örnek:
 ```
 $app->get( "pass" );
 ```
-
-```$key```: Bind keyi.
 
 ### ```setted``` Fonksiyonu
 
@@ -91,8 +91,8 @@ $app->get( "pass" );
 
 ```setted( $key, $val = null )```
 
-```$key```: Varlığı sorulan Bnd keyi.
-```$val```: Eğer Bind yok ise yerine konulması istenen değer.
+- ```$key```: Varlığı sorulan Bnd keyi.
+- ```$val```: Eğer Bind yok ise yerine konulması istenen değer.
 
 ### ```call``` Fonksiyonu
 
@@ -100,8 +100,8 @@ $app->get( "pass" );
 
 ```call( $key, $arguments = array() )```
 
-```$key```: Callable olan Bind.
-```$arguments```: Çalıştırılan Bind'e gönderilen argümanlar.
+- ```$key```: Callable olan Bind.
+- ```$arguments```: Çalıştırılan Bind'e gönderilen argümanlar.
 
 Örnek:
 ```
@@ -124,10 +124,10 @@ Apper nesnesine Event oluşturur.
 
 ```on( $name, $function, $arguments = array(), $one = false )```
 
-```$name```: Event ismi.
-```$function```: Event fonksiyon listesine eklenecek Callable.
-```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
-```$one```: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
+- ```$name```: Event ismi.
+- ```$function```: Event fonksiyon listesine eklenecek Callable.
+- ```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+- ```$one```: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
 
 Ör:
 ```
@@ -142,8 +142,8 @@ Event listesindeki olayı tetikler. Olay tetiklemesi ile fonksiyon listesi sıra
 
 ```trigger( $eventName, $arguments = array() )```
 
-```$eventName```: Tetiklenecek Event ismi.
-```$arguments```: Event listesindeki fonksiyonlara ortak gönderilecek argüman listesi.
+- ```$eventName```: Tetiklenecek Event ismi.
+- ```$arguments```: Event listesindeki fonksiyonlara ortak gönderilecek argüman listesi.
 
 ```trigger``` Event'i tetiklemeden önce ```before.$eventName```'i tetikler. Sonrasında Event'i tetikler. Event tetiklendikten sonra ```before.$eventName```'i tetikler.
 
@@ -153,9 +153,9 @@ Event listesindeki olayı tetikler. Olay tetiklemesi ile fonksiyon listesi sıra
 
 ```one( $name, $function, $arguments = array(), $one = false )```
 
-```$name```: Event ismi.
-```$function```: Event fonksiyon listesine eklenecek Callable.
-```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+- ```$name```: Event ismi.
+- ```$function```: Event fonksiyon listesine eklenecek Callable.
+- ```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
 
 ### ```before``` Fonksiyonu
 
@@ -163,10 +163,10 @@ Event listesindeki olayı tetikler. Olay tetiklemesi ile fonksiyon listesi sıra
 
 ```before( $name, $function, $arguments = array(), $one = false )```
 
-```$name```: Event ismi.
-```$function```: Event fonksiyon listesine eklenecek Callable.
-```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
-```$one```: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
+- ```$name```: Event ismi.
+- ```$function```: Event fonksiyon listesine eklenecek Callable.
+- ```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+- ```$one```: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
 
 ### ```after``` Fonksiyonu
 
@@ -174,10 +174,10 @@ Event listesindeki olayı tetikler. Olay tetiklemesi ile fonksiyon listesi sıra
 
 ```after( $name, $function, $arguments = array(), $one = false )```
 
-```$name```: Event ismi.
-```$function```: Event fonksiyon listesine eklenecek Callable.
-```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
-```$one```: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
+- ```$name```: Event ismi.
+- ```$function```: Event fonksiyon listesine eklenecek Callable.
+- ```$arguments```: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+- ```$one```: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
 
 ### ```isEvent``` Fonksiyonu
 
@@ -185,7 +185,7 @@ Event'in olup olmadığını döner.
 
 ```isEvent( $eventName )```
 
-```$eventName```: Varlığı sorulan Event.
+- ```$eventName```: Varlığı sorulan Event.
 
 ## Apper Nesnesine Fonksiyon Eklemek
 
@@ -197,8 +197,8 @@ Fonksiyon ekler.
 
 ```setPatch( $functionName, $function );```
 
-```$functionName```: Fonksiyon ismi.
-```$function```: Callable içerik.
+- ```$functionName```: Fonksiyon ismi.
+- ```$function```: Callable içerik.
 
 Örnek:
 ```
@@ -213,7 +213,7 @@ Fonksiyon siler.
 
 ```delPatch( $functionName );```
 
-```$functionName```: Fonksiyon ismi.
+- ```$functionName```: Fonksiyon ismi.
 
 ### ```patched``` Fonksiyonu
 
@@ -221,8 +221,8 @@ Fonksiyon varlığını döndürür.
 
 ```patched( $functionName, $function = null );```
 
-```$functionName```: Fonksiyon ismi.
-```$function```: Eğer fonksiyon yok ise yerine konması istenen Callable içerik.
+- ```$functionName```: Fonksiyon ismi.
+- ```$function```: Eğer fonksiyon yok ise yerine konması istenen Callable içerik.
 
 ### ```getPatch``` Fonksiyonu
 
@@ -230,7 +230,7 @@ Fonksiyonu döndürür.
 
 ```getPatch( $functionName );```
 
-```$functionName```: Fonksiyon ismi.
+- ```$functionName```: Fonksiyon ismi.
 
 ### Patch ile Eklenen Fonksiyonu Çağırmak
 
@@ -265,7 +265,7 @@ Apper nesnesinin ```main_function``` Bind'ini ```call``` ile çalıştırır.
 
 ```run( $arguments = array() )```
 
-$arguments: ```main_function``` Bind'ine göndeirilen argümanlar.
+- ```$arguments```: ```main_function``` Bind'ine göndeirilen argümanlar.
 
 ### ```version``` Fonksiyonu
 
