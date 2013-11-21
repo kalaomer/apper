@@ -4,7 +4,8 @@
 # Apper ( Application Object Creator )
 
 ## Amaç
-Apper, hızlı bir şekilde uygulama oluşturup kendisini özelleştirebilen bir yapı sunmaktadır. Sunduğu Class her türlü şekilde şekil alabilir ve geliştirilebilir. Ayrıca gayet basit ve kolay bir kullanımı bulunmaktadır.
+
+Apper, hızlı bir şekilde uygulama oluşturup kendisini özelleştirebilen bir yapı sunmaktadır. Sunduğu Obje her türlü şekilde şekil alabilir ve geliştirilebilir. Ayrıca gayet basit ve kolay bir kullanımı bulunmaktadır.
 
 ### Hello World!
 ```
@@ -14,6 +15,10 @@ $apper = apper( function( $app ) {
 $apper->run();
 ```
 Burada yapılan şey; $apper değişkenine Apper nesnesi atandı. ```apper()``` içine yazılan fonksiyon ise $apper nesnesinin ana fonksiyonunu oluşturmakta. En son bu ana fonksiyonu çalıştırmak için ```$apper->run();``` ifadesi kullanılır.
+
+## Kurulumu
+
+Apper indirildikten sonra sadece ```index.php``` dosyasının ```require``` edilmesi yeterlidir.
 
 ## Apper oluşturma yolları
 
@@ -257,7 +262,7 @@ Apper'ın otomatik olarak atadığı Bind'ler mevcuttur.
 
 - ```name```: Apper nesnesinin ismidir. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak Class ismini(```__CLASS__```) alır.
 - ```version```: Apper nesnesinin verisiyonudur. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak ```0.0.0``` alır.
-- ```main_function```: Apper'ın ```run``` fonksiyonu ile çalıştırılan Bind'idir. Apper oluşturulurken eklenen fonksiyondur.
+- ```main_function```: Apper'ın ```run``` fonksiyonu ile çalıştırılan Bind'idir. Apper oluşturulurken eklenen fonksiyondur. Apper nesnesi oluşturulduktan sonra normal bir şekilde Bind editleme ile değiştirilebilir.
 
 ### ```run``` Fonksiyonu
 
