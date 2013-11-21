@@ -276,6 +276,14 @@ Apper nesnesinin ```main_function``` Bind'ini ```call``` ile çalıştırır.
 
 Apper nesnesinin ```version``` Bind'ini döndürür.
 
+## Performans Hakkında
+
+Benchmark testleri daha yapılmadı fakat performansı korumak adına şu tavsiyeler verilebilir:
+
+- Static Apper'ı gerek kalmadıkça kullanmayın. Çünkü bütün fonksiyonları ```Magic Method``` ile çağırmaktadır.
+
+- Fonksiyon çağırma hızını arttırmak için fonksiyonları Bind ile tutun. Çünkü Pach ile tutarsanız, fonksiyon ```Magic Method``` ile çağrılır. Bind ile direk çağırabilirsiniz.
+
 ## Son
 
 Apper için oluşturulan test dosyaları Apper'ı kullanmak için fikir verebilir.
