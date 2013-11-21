@@ -255,9 +255,9 @@ Bind ve Patch ile fonksiyon eklenebilir, fakat patch ile eklenenler direk çağr
 
 Apper'ın otomatik olarak atadığı Bind'ler mevcuttur.
 
-```name```: Apper nesnesinin ismidir. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak Class ismini(```__CLASS__```) alır.
-```version```: Apper nesnesinin verisiyonudur. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak ```0.0.0``` alır.
-```main_function```: Apper'ın ```run``` fonksiyonu ile çalıştırılan Bind'idir. Apper oluşturulurken eklenen fonksiyondur.
+- ```name```: Apper nesnesinin ismidir. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak Class ismini(```__CLASS__```) alır.
+- ```version```: Apper nesnesinin verisiyonudur. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak ```0.0.0``` alır.
+- ```main_function```: Apper'ın ```run``` fonksiyonu ile çalıştırılan Bind'idir. Apper oluşturulurken eklenen fonksiyondur.
 
 ### ```run``` Fonksiyonu
 
