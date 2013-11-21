@@ -1,214 +1,278 @@
+
+
+
 # Apper ( Application Object Creator )
 
-### TR Anlatım
+## Amacı
+Apper, hızlı bir şekilde uygulama oluşturup kendisini özelleştirebilen bir yapı sunmaktadır. Sunduğu Class her türlü şekilde şekil alabilir ve geliştirilebilir. Ayrıca gayet basit ve kolay bir kullanımı bulunmaktadır.
 
-Apper, hızlı bir şekilde uygulama oluşturup kendisini özelleştirebilen bir yapı sunmaktadır. Sunduğu Class her türlü şekilde şekil alabilir ve geliştirilebilir. Ayrıca gayet basit ve kolay bir kullanımı bulunmaktadır. 
-
-### Apper ile "Hello World!" yazdırmak
-
-``` 
+### Hello World!
+```
 $apper = apper( function( $app ) {
 	echo 'Hello World!<br/>';
 } );
-
 $apper->run();
 ```
-
 Burada yapılan şey; $apper değişkenine Apper nesnesi atandı. ```apper()``` içine yazılan fonksiyon ise $apper nesnesinin ana fonksiyonunu oluşturmakta. En son bu ana fonksiyonu çalıştırmak için ```$apper->run();``` ifadesi kullanılır.
 
-### Örnek bir Apper nesnesi oluşturma
+## Apper oluşturma yolları
 
-Apper Class'ını oluşturmanın bir çok yolu vardır. Apper Class'ları nesne üzerinden veya Static şekilde kolaylıkla kontrol edilebilir.
+Apper oluşturnın bir çok yolu vardır.
 
-#### Apper Class'ından bir nesne oluşturmak
+### ```apper``` Fonksiyonu
 
-Direk Apper\Application üzerinden nesne oluşturmak.
+Yeni bir Apper nesnesi oluşturur. Apper\Application'dan nesne oluşturur.
+
+```apper( $mainFunction, $binds = array() )```
+
+$mainFunction: Apper çalıştırılacağı zaman çalışacak Callable.
+$binds: Apper nesnesine otomatik verilecek Bind'ler.
+
+Örnek:
 ```
-$foo = new Apper\Application( function( $app ) {
-	return $app->get( "name" ) . ' said "HI!" <br/>';
-} );
-```
-
-Fonksiyon yardımı ile Apper nesnesi oluşturmak.
-``` 
-$Jack = apper( function( $app ) {
-	return $app->get( "name" ) . ' said "HI!" <br/>';
-} );
-```
-
-#### Apper Class'ı static olarak kullanmak
-
-Apper\StaticApplication class'ı static olayları kontrol etmektedir.
-
-Direk Apper\StaticApplication üzerinden class oluşturmak.
-```
-class foo extends Apper\StaticApplication {}
-
-foo::init( function( $app ) {
-	return $app->get( "name" ) . ' said "HI!" <br/>';
-} );
+$foo = apper( function( $app ) {
+	echo 'Hello World!<br/>';
+}, array(
+	“name” => “foo",
+	"version" => "0.0.1"
+) );
 ```
 
-Fonksiyon yardımı ile Class oluşturmak.
-```
-staticApper( "foo", function( $app ) {
-	return $app->get( "name" ) . ' said "HI!" <br/>';
-} );
-```
+### ```staticApper``` Fonksiyonu
 
-Eğer fonksiyon ile ```namespace``` kullanılan bir StaticApplication oluşturulmak istenirse.
-```
-staticApper( "NameArea\\foo", function( $app ) {
-	return $app->get( "name" ) . ' said "HI!" <br/>';
-} );
-```
-Burada ```namespace NameArea;``` altında ```foo``` Class'ı oluşturulmuştur.
+Static fonksiyonlara sahip bir Apper Class'ı oluşturur. Oluşturulan Class Apper\StaticApplication'a bağlıdır.
+
+```staticApper( $className, $mainFunction, $binds = array() )```
+
+$className: Oluşturulacak Class'ın ismi. Bu Class eğer belli bir Namespace'in altında oluşturulmak istenirse ```namespace\\foo``` şeklinde doldurulmalıdır.
+$mainFunction: Apper çalıştırılacağı zaman çalışacak Callable.
+$binds: Apper nesnesine otomatik verilecek Bind'ler.
 
 ### Apper'ı Static veya Nesne ile Kontrol Etmek Arasındaki Fark
 
-Apper'ı Static olarak yöneten Apper\StaticApplication kendi içinde Apper\Application oluşturmaktadır. ```__callStatic``` ile Apper\Application'un fonksiyonlarına erişim imkanı vermektedir. Apper\StaticApplication'un temel görevi Apper\Application'u nesne olarak bulundurup, Static erişim imkanı vererek, Class'ı direk olarak projenin heryerinde çağırma imkanı vermektir.
+Apper'ı Static olarak yöneten Apper\StaticApplication kendi içinde Apper\Application oluşturmaktadır. ```__callStatic``` ile Apper\Application'ın fonksiyonlarına erişim imkanı vermektedir. Apper\StaticApplication'ın temel görevi Apper\Application'ı nesne olarak bulundurup, Static erişim imkanı vererek, Class'ı direk olarak projenin heryerinde çağırma imkanı vermektir.
 
 Kısacası Apper\Application'dan çağırdığınız bütün fonksiyonları Apper\StaticApplication ile Static şekilde çağırabilirsiniz.
 
-### Bilgi Almak/Saklamak
+## Apper ile Bind İşlemleri
 
-Apper ile bilgi almak veya saklamak gayet kolaydır.
+Bind'ler Apper nesnesinde tutulan değerlerdir. Bu değerler istenildiği gibi oluşturulup, silinip, değiştirilebilirler. Nesneye eklenen Bindler ```bindings```'de array içinde tutulur.
 
-Apper nesnesinde bilgi saklamak/almak
+### ```set``` Fonksiyonu
+
+```set``` ile herhangi bind oluşturulabilir veya düzeltilebilir.
+
+```set( $key, $value )```
+
+$key: Bind'in çağrılacağı zaman kullanılan anahtar.
+$value: Bind çağrıldığında dönülecek değer.
+
+Örnek:
 ```
-$Jack->set( "pass", 1234 );
-echo $apper->get( "pass" );
+$app->set( "pass", 1234 );
 ```
 
-Eğer saklanan bilgi ```callable``` ise(fonksiyon şeklinde çağrılabilir ise) fonksiyonun direk çıktısını almak mümkündür
+### ```get``` Fonksiyonu
+
+```get``` ile önceden oluşturulan Bind'in değeri alınır.
+
+```get( $key )```
+
+Örnek:
 ```
-$Jack->set( "whatsUp", function( $app, $status ) {
-	return "I'm $status!";
-} )
-
-echo $Jack->call( "whatsUp", "fine" );
+$app->get( "pass" );
 ```
 
-Burada ```$Jack```'de ```whatsUp``` değerine fonksiyon atadır. Bu fonksiyonun ilk argümanı Class'ın nesne halidir, ikinci argüman olarak dışarıdan bir değer istedik. ```$Jack->call( "whatsUp", "fine" )``` ile ```whatsUp``` çağrıldı ve ikinci argüman olarak ```fine``` değeri gönderildi. Çıktı olarak fonksiyonun çıktısı gönderildi.
+$key: Bind keyi.
 
-### Apper ile Olay oluşturmak ( Events )
+### ```setted``` Fonksiyonu
 
-Apper ile event oluşturmak ve tetiklemek gayet basit bir iştir.
+```setted``` ile Bind'in varolup olmadığı öğrenilir.
 
-#### ```On``` Fonksiyonu
+```setted( $key, $val = null )```
 
-```On``` fonksiyonu ile Event'e fonksiyon eklenir. Fonksiyonunun dört adet argümanı vardır.
+$key: Varlığı sorulan Bnd keyi.
+$val: Eğer Bind yok ise yerine konulması istenen değer.
 
-```on( $eventName, $eventFunction, $eventArguments = array(), $one = false );```
+### ```call``` Fonksiyonu
 
-```$eventName```: Event ismi.
-```$eventFunction```: Event çağrıldığında çalıştırılacak fonksiyon.
-```$evenArguments```: Event çağrıldığında eklenen fonksiyon tetiklendiğinde beraberinde yollanacak argümanlar.
-```$one```: Event fonksiyonunun ilk çalıştırmadan sonra Event fonksiyon listesinden otomatik kalkmasını sağlayan argüman.
+```call``` ile Callable olarak ayarlanmış bir Bind'i çalıştırmayı sağlar.
 
-##### ```On``` ile Basit bir event oluşturmak
+```call( $key, $arguments = array() )```
+
+$key: Callable olan Bind.
+$arguments: Çalıştırılan Bind'e gönderilen argümanlar.
+
+Örnek:
 ```
-$Jack->on( "saySomething", function( $app ) {
-	echo "I'm saying something now!";
-} )
-```
-Burada tetiklenmesi için ```saySomething``` adında bir event'e fonksiyon eklenmiştir. Fonksiyonun ilk argümanının Application nesnesi olduğuna dikkat edelim.
-
-Event'lere birden fazla fonksiyon eklenebilir.
-```
-$Jack->on( "saySomething", function( $app ) {
-	echo "I'm saying something now!";
+$app->set( "hi", function( $app, $sayWho ) {
+	echo $app->get( "name" ) . " say hi to " . $sayWho;
 } );
 
-$Jack->on( "saySomething", function( $app ) {
-	echo "Oppa Oppa Gungnam Style!";
+$app->call( "hi", $sayWho );
+```
+
+Not: Burada dikkat edilmesi gerekilen nokta, ```call``` ile gönderilen ilk argümanın Apper nesnesi olmasıdır.
+
+## Apper ile Olay işlemleri ( Events )
+
+Apper, basit ama etkili bir Event sistemine sahiptir.
+
+### ```on``` Fonksiyonu
+
+Apper nesnesine Event oluşturur.
+
+```on( $name, $function, $arguments = array(), $one = false )```
+
+$name: Event ismi.
+$function: Event fonksiyon listesine eklenecek Callable.
+$arguments: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+$one: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
+
+Ör:
+```
+$app->on( "saySomething", function( $app ) {
+	echo "saySomething Event is running.";
 } );
 ```
-Burada ```saySomething``` event'ine iki adet fonksiyon eklenmiş oldu.
 
-#### ```One``` ile Tek Seferlik Çalışacak Event Oluşturmak
+### ```trigger``` Fonksiyonu
 
-```On``` fonksiyonunun son argümanı ile tek seferlik fonksiyon eklemek mümkündür. Ama bu işi son argümanı ```true``` yapmadan gerçekleştirmek istenirse ```one``` fonksiyonunu kullanılabilir.
+Event listesindeki olayı tetikler. Olay tetiklemesi ile fonksiyon listesi sırası ile çalıştırılır.
 
-```
-$Jack->one( "saySomething", function( $app ) {
-	echo "I'm saying something now!";
-} );
-```
-Burada $Jack'e eklenen event fonksiyonu ilk tetiklenmeden sonra otomatik olarak kendisini event fonksiyonları listesinden çıkaracaktır.
+```trigger( $eventName, $arguments = array() )```
 
-#### ```Trigger``` ile Event Tetikleme
+$eventName: Tetiklenecek Event ismi.
+$arguments: Event listesindeki fonksiyonlara ortak gönderilecek argüman listesi.
 
-Event tetikleme ile event için eklenen fonksiyonları tek tek çalıştırır.
+```trigger``` Event'i tetiklemeden önce ```before.$eventName```'i tetikler. Sonrasında Event'i tetikler. Event tetiklendikten sonra ```before.$eventName```'i tetikler.
 
-```Trigger``` fonksiyonunun 2 adet argümanı vardır.
+### ```one``` Fonksiyonu
 
-```trigger( $eventName, $eventArguments = array() );```
+```on``` fonksiyonundaki $one değerini otomatik olarak ```true``` olarak Event'e fonksiyon ekler.
 
-```$eventName```: Event ismi.
-```$evenArguments```: Event çağrıldığında eklenen fonksiyon tetiklendiğinde beraberinde yollanacak argümanlar.
+```one( $name, $function, $arguments = array(), $one = false )```
 
-#### Argüman Dizilimi Önceliği
+$name: Event ismi.
+$function: Event fonksiyon listesine eklenecek Callable.
+$arguments: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
 
-```$argumanlar = array( $app, ```on``` ve ```one``` ile gönderilen argüman(lar) ..., ```trigger``` ile gönerilen argümanlar...)```
+### ```before``` Fonksiyonu
 
-##### Basit Bir Trigger Örneği
-```
-$Jack->one( "saySomething", function( $app ) {
-	echo "I'm saying something now!";
-} );
+```before.$eventName```'e fonksiyon ekler.
 
-$Jack->trigger( "saySomething" );
-```
+```before( $name, $function, $arguments = array(), $one = false )```
 
-#### ```Before``` ile Event Öncesi Event Oluşturmak
+$name: Event ismi.
+$function: Event fonksiyon listesine eklenecek Callable.
+$arguments: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+$one: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
 
-Bir eventin çağrılması otomatik olarak o event çağrılmadan önce çağrılacak eventleri çağırmayı tetikler.
+### ```after``` Fonksiyonu
 
-Örneğin:
-```
-$Jack->one( "saySomething", function( $app ) {
-	echo "I'm saying something now!";
-} );
+```after.$eventName```'e fonksiyon ekler.
 
-$Jack->before( "saySomething", function( $app ) {
-	echo "(I'will say something.)";
-} )
+```after( $name, $function, $arguments = array(), $one = false )```
 
-$Jack->trigger( "saySomething" );
-```
-Burada oluşan olay: Trigger ile çağrılan Event, önce Before ile eklenen event(leri) çağırır. Yani ekrana önce ```(I'will say something.)``` yazılır. Sonra Event'in kendisi çalıştırılır ve ```I'm saying something now!``` yazdırılır.
+$name: Event ismi.
+$function: Event fonksiyon listesine eklenecek Callable.
+$arguments: Fonksiyon çağrıldığında beraberinde yollacak argümanlar.
+$one: Fonksiyon Event tetiklendiğinde bir kez çalıştırıldıktan sonra Event fonksiyonları listesinden sil.
 
-### Apper ile MonkeyPatch Yapmak
+### ```isEvent``` Fonksiyonu
 
-Apper sürekli kendisini geliştirebilen bir nesnedir. Buna kendisine yeni fonksiyonlar ekleme de dahildir. MonkeyPatch özelliği sayesinde kendisine fonksiyon ekleyebilir.
+Event'in olup olmadığını döner.
 
-#### ```setPatch``` ile Fonksiyon Eklemek
+```isEvent( $eventName )```
 
-```setPatch``` ile Apper'ı kullanan Objeye veya Class'a fonksiyon ekler.
+$eventName: Varlığı sorulan Event.
 
-```setPatch``` fonksiyonunun 2 adet argümanı vardır.
+## Apper Nesnesine Fonksiyon Eklemek
+
+Apper nesnesi her çeşit kalıba uyum sağlaması için tasarlanmıştır. Nesneye Fonksiyon eklemek son derece kolaydır. Nesneye eklenen fonksiyonlar ```monkeyPatches```'de array içinde tutulur.
+
+### ```setPatch``` Fonksiyonu
+
+Fonksiyon ekler.
 
 ```setPatch( $functionName, $function );```
 
-```$functionName```: Fonksiyon ismi.
-```$function```: Fonksiyon.
+$functionName: Fonksiyon ismi.
+$function: Callable içerik.
 
-Örnek kod:
+Örnek:
 ```
 $app->setPatch( "sayHi", function( $app ) {
-	$app->get( "name" ) . " said 'Hi!'";
+	echo "Hi!";
+} );
+```
+
+### ```delPatch``` Fonksiyonu
+
+Fonksiyon siler.
+
+```delPatch( $functionName );```
+
+$functionName: Fonksiyon ismi.
+
+### ```patched``` Fonksiyonu
+
+Fonksiyon varlığını döndürür.
+
+```patched( $functionName, $function = null );```
+
+$functionName: Fonksiyon ismi.
+$function: Eğer fonksiyon yok ise yerine konması istenen Callable içerik.
+
+### ```getPatch``` Fonksiyonu
+
+Fonksiyonu döndürür.
+
+```getPatch( $functionName );```
+
+$functionName: Fonksiyon ismi.
+
+### Patch ile Eklenen Fonksiyonu Çağırmak
+
+Patch ile eklenen fonksiyon normal fonksiyonmuş gibi çağrılabilir.
+
+Örnek:
+```
+$app->setPatch( "sayHi", function( $app ) {
+	echo "Hi!";
 } );
 
 $app->sayHi();
 ```
 
-Burada dikkat edilmesi gereken nokta, ilk argümanın Apper nesnesi olduğudur. Ayrıca fonksiyona ek olarak başka argümanlarda eklenebilir.
+## Apper Detayları
 
-#### ```delPatch``` ile Pacth Silme
+### Bind ile Patch Arasındaki Fark
 
+Bind ve Patch ile fonksiyon eklenebilir, fakat patch ile eklenenler direk çağrılabilir, bind ile eklenenler ```call``` ile çağrılabilir. Ayrıca pacth sistemi fonksiyon eklemek için tasarlanmıştır. Onun için Patch sistemi ile fonksiyon eklenmesi daha doğrudur.
 
+### Otomatik oluşturulan Bind'ler
 
-### Çalışma mantığı
+Apper'ın otomatik olarak atadığı Bind'ler mevcuttur.
 
-Apper aslında gayet basit bir yapıdır. Amacı uygulamalar için basit bir zemin oluşturmaktır. Apper'ın ana Class'ı Apper\Application'dur. Apper\Application ```__construct, version, run, boot``` fonksiyonlarını bulundurur.
+name: Apper nesnesinin ismidir. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak Class ismini(```__CLASS__```) alır.
+version: Apper nesnesinin verisiyonudur. Apper oluşturulurken Bind'lere eklenmezse otomatik olarak ```0.0.0``` alır.
+main_function: Apper'ın ```run``` fonksiyonu ile çalıştırılan Bind'idir. Apper oluşturulurken eklenen fonksiyondur.
+
+### ```run``` Fonksiyonu
+
+Apper nesnesinin ```main_function``` Bind'ini ```call``` ile çalıştırır.
+
+```run( $arguments = array() )```
+
+$arguments: ```main_function``` Bind'ine göndeirilen argümanlar.
+
+### ```version``` Fonksiyonu
+
+Apper nesnesinin ```version``` Bind'ini döndürür.
+
+## Son
+
+Apper için oluşturulan test dosyaları Apper'ı kullanmak için fikir verebilir.
+
+Destek için kalaomer@hotmail.com adresinden destek alabilirsiniz.
