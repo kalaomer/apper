@@ -2,7 +2,7 @@
 
 namespace Apper;
 
-class Container extends EventManager {
+class Container {
 	
 	/**
 	 * Bindings.
