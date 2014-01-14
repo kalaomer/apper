@@ -1,50 +1,35 @@
 <?php
 
-namespace Apper;
+class Apper extends Apper\Container {
 
-class Application extends Container {
+	Public function __construct( $binds = array(), $prototype = array() )
+	{
+		$this->prototype( $prototype );
+		$this->parsePrototypeToBinds();
 
-	/**
-	 * Create main function, and main binds.
-	 */
-	function __construct( $mainFunction, array $binds = array() )
+		$this->parseBinds( $binds );
+	}
+
+	Public function newApp( $binds = array(), $prototype = array() )
+	{
+		return new static( $binds, array_merge($this->prototype, $prototype) );
+	}
+
+	Public function extendsApp( $app, $runFuncTemplate = null, $args = array() )
 	{
 
-		$binds = array_merge( array(
-				"name" => __CLASS__,
-				"version" => "0.0.0",
-				"main_function" => $mainFunction
-				),
-				$binds
-			 );
+		if ( !is_object( $app ) || !( $app instanceof self ) )
+		{
+			throw new \Exception("Wrong Application");
+		}
 
-		foreach ($binds as $key => $value) {
-			$this->set( $key, $value );
+		$this->parseBinds( $app->bind() );
+		$this->prototype( $app->prototype() );
+
+		if ( $runFuncTemplate instanceof \Closure )
+		{
+			$runcFunc = $runFuncTemplate->bindTo( $this, $this );
+			return call_user_func_array($runcFunc, $args);
 		}
 	}
-
-	/**
-	 * Return version value from binds.
-	 */
-	Public function version()
-	{
-		return $this->get( "version" );
-	}
-
-	/**
-	 * Call 'main_function' bind.
-	 */
-	Public function run( $args = array() )
-	{
-		return $this->call( 'main_function', $args );
-	}
-
-	/**
-	 * Call 'boot_function' bind.
-	 */
-	Public function boot( $args = array() )
-	{
-		return $this->call( 'boot_function', $args );
-	}
-
 }

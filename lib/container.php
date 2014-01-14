@@ -3,155 +3,189 @@
 namespace Apper;
 
 class Container {
-	
-	/**
-	 * Bindings.
-	 * @var array
-	 */
-	Protected $bindings = array();
+
+	Protected $binds = array();
+
+	Protected $prototype = array();
 
 	/**
-	 * Methode functions created with monkey pach.
-	 * @var array
-	 */
-	Protected $monkeyPatches = array();
-
-	/*
-	 *
-	 * Bind functions!
-	 *
+	 * ==================================================================
+	 * ==================================================================
+	 * Bind functions.
 	 */
 
 	/**
-	 * Create bind.
+	 * If Binds's including Closure, this is merge with object.
 	 */
-	Public function set( $key, $val )
+	Public function parseBinds( $rawBinds = array() )
 	{
-		return $this->bindings[ $key ] = $val;
-	}
+		foreach ($rawBinds as $key => $bind) {
 
-	/**
-	 * Delete binded value.
-	 */
-	Public function del( $key )
-	{
-		return $this->binded( $key ) ? unlink( $this->bindings[ $key ] ) : false;
-	}
-
-	/**
-	 * Return true if $key is already binded.
-	 * If false and $val is not null, then bind this value to $key.
-	 */
-	Public function setted( $key, $val = null )
-	{
-		if ( isset($this->bindings[ $key ]) )
-		{
-			return true;
-		}
-
-		if ($val != null) 
-		{
-			$this->bindings[ $key ] = $val;
-			return true;
-		}
-
-		return false;
-	}
-
-	Public function get( $key )
-	{
-		return $this->bindings[ $key ];
-	}
-
-	/**
-	 * Call binded value if it is callable.
-	 */
-	Public function call( $key, $args = array() )
-	{
-
-		$func = $this->get( $key );
-
-		// Add $this to binded function arguments.
-		array_unshift( $args, $this );
-
-		if (is_callable($func)) {
-			return call_user_func_array($func, $args);
-		}
-
-		return;
-	}
-
-
-	/*
-	 *
-	 * Monkey Patch Functions!
-	 *
-	 */
-
-	/**
-	 * Create Monkey Patch.
-	 */
-	Public function setPatch( $name, $func )
-	{
-		$this->monkeyPatches[ $name ] = $func;
-	}
-
-	/**
-	 * Return patched function.
-	 */
-	Public function getPatch( $name ) {
-		if ( $this->patched( $name ) ) {
-			return $this->monkeyPatches[ $name ];
-		}
-	}
-
-	/**
-	 * Delete patch.
-	 */
-	Public function delPatch( $name )
-	{
-		if ( $this->patched( $name ) )
-		{
-			unset( $this->monkeyPatches[ $name ] );
-		}
-	}
-
-	/**
-	 * Return true if $name is already patched.
-	 * If false and $func is not null, then bind this value to $name.
-	 */
-	Public function patched( $name, $func = null )
-	{
-		if ( isset($this->monkeyPatches[ $name ]) )
-		{
-			return true;
-		}
-
-		if ($func != null) 
-		{
-			$this->monkeyPatches[ $name ] = $func;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Call pathed functions with __call magic methode.
-	 */
-	function __call( $name, $args = array() )
-	{
-		// Add $this to binded function arguments
-		array_unshift($args, $this);
+			// If Bind is Closure, bind it.
+			if ($bind instanceof \Closure) {
+				$this->binds[ $key ] = $bind->bindTo( $this, $this );
+			}
+			else
+			{
+				$this->binds[ $key ] = $bind;
+			}
 		
-		if ( $this->patched( $name ) )
-		{
-			return call_user_func_array( $this->getPatch( $name ) , $args);
+		}
+	}
+
+	Public function changeBinds( $binds )
+	{
+		$this->delBind();
+		return $this->parseBinds( $binds );
+	}
+
+	Public function bind()
+	{
+		$args = func_get_args();
+
+		switch (count($args)) {
+			case 0:
+				return $this->binds;
+			
+			case 1:
+				if ( is_array( $arg = $args[0] ) )
+				{
+					return $this->parseBinds( $arg );
+				}
+
+				return $this->binds[ $arg ];
+
+			case 2:
+				return $this->parseBinds( array( $args[0] => $args[1] ) );
+
+			default:
+				throw new Exception("Wrong arguments");
+				break;
+		}
+	}
+
+	Public function delBind()
+	{
+		$args = func_get_args();
+		if ( count( $args ) > 0 ) {
+			unset( $this->binds[ $args[0] ] );
 		}
 		else
 		{
-			return trigger_error( 'Function didn\'t find! Function: ' . $name );
+			$this->binds = array();
 		}
 	}
 
+	Public function isBind( $key )
+	{
+		return isset( $this->binds[ $key ] );
+	}
+
+	Public function isCallableBind( $key )
+	{
+		return $this->isBind( $key ) && is_callable( $this->bind( $key ) );
+	}
+
+	/**
+	 * ==================================================================
+	 * ==================================================================
+	 * Prototype functions.
+	 */
+	
+	Public function isPrototype( $key )
+	{
+		return isset( $this->prototype[ $key ] );
+	}
+
+	Public function prototype()
+	{
+		$args = func_get_args();
+
+		switch (count($args)) {
+			case 0:
+				return $this->prototype;
+			
+			case 1:
+				if ( is_array( $arg = $args[0] ) )
+				{
+					return $this->prototype = array_merge( $this->prototype, $arg );
+				}
+
+				return $this->prototype[ $arg ];
+
+			case 2:
+				return $this->prototype[ $args[0] ] = $args[1];
+
+			default:
+				throw new Exception("Wrong arguments");
+				break;
+		}
+	}
+
+	Public function delPrototype()
+	{
+		$args = func_get_args();
+		if ( count( $args ) > 0 ) {
+			unset( $this->prototype[ $args[0] ] );
+		}
+		else
+		{
+			$this->prototype = array();
+		}
+	}
+
+	Public function changePrototype( $prototype )
+	{
+		$this->delPrototype();
+		return $this->prototype = $prototype;
+	}
+
+	Public function parsePrototypeToBinds()
+	{
+		return $this->parseBinds( $this->prototype );
+	}
+
+	/**
+	 * ==================================================================
+	 * ==================================================================
+	 * Magic Metods.
+	 */
+
+	Public function __set( $key, $value )
+	{
+		$this->bind( $key, $value );
+	}
+
+	Public function __get( $key )
+	{
+		if ( !$this->isBind( $key ) )
+		{
+			throw new \Exception( "This variable isn't exists. Variable: " . $key );
+		}
+
+		return $this->bind( $key );
+	}
+
+	Public function __call( $bind, $args )
+	{
+		if ( ! $this->isCallableBind( $bind ) )
+		{
+			throw new \Exception("Wrong function name. Function Name: " . $bind);
+		}
+
+		return call_user_func_array($this->bind($bind), $args);
+	}
+
+	/**
+	 * ==================================================================
+	 * ==================================================================
+	 * Quick functions.
+	 */
+
+	Public function exec( \Closure $funcTemplate, array $args = array() )
+	{
+		$func = $funcTemplate->bindTo( $this, $this );
+
+		return call_user_func_array($func, $args);
+	}
 }

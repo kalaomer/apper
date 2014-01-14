@@ -8,51 +8,55 @@
 // First of all, add Apper files.
 require_once ".." . DIRECTORY_SEPARATOR . "index.php";
 
-//Now create Apper Object.
-$app = new Apper\Application(
-
-	// This function is running when call application run function.
-	// $app which is function argument is application object.
-	// Run function is automatically add $app argument to main function.
-	function( $app ) {
-
-		// Call $app's function.
-		// This function isn't exist but we will create one, just wait :)
-		$app->sayHi();
-
-		// return $app's version info.
-		return $app->version();
-	},
-
+$apper = new Apper(
 	array(
-		// This bind's default value is "0.0.0",
-		// But now we define this bind.
-		"version" => "0.0.1",
+		"name" => "newApper"
+		),
+	array(
+		"count" => 0,
+		"counter" => function()
+		{
+			return $this->count++;
+		}
+	) );
 
-		// This bind's default value is "Apper\Application",
-		// But now we define this bind.
-		"name" => "firstApp",
+var_dump($apper);
 
-		// Create another bind which name is "mySecret".
-		"mySecret" => "I like her, but Shhh, this is secret! :)"
-		)
-);
+var_dump( $apper->counter() );
+var_dump( $apper->counter() );
 
-// Now patch $app for "sayHi" function.
-// Because we need this function for main function, remember? :)
-$app->setPatch( "sayHi", function( $app ) {
+var_dump( $apper->count );
 
-	// Echo $app name which binded value of name.
-	echo $app->get("name") . " said 'Hi!'<br/>";
-	
-} );
+$apper->prototype( "count", 10 );
 
-// Now run $app.
-// Run function will return $app's version info.
-$version = $app->run();
+$apper2 = $apper->newApp();
 
-// Echo $version.
-echo "Application's version is " . $version . "<br/>";
+var_dump( $apper2 );
 
-// Get "mySecret" from $app then echo this.
-echo "My secret is: " . $app->get( "mySecret" ) . "<br/>";
+$apper2->counter();
+$apper2->counter();
+$apper2->counter();
+$apper2->counter();
+
+var_dump( $apper2 );
+
+$apper2->counter = function()
+{
+	return $this->count--;
+};
+
+$apper2->counter();
+$apper2->counter();
+$apper2->counter();
+
+var_dump( $apper2 );
+
+var_dump($apper);
+
+$apper->extendsApp( $apper2 );
+
+var_dump($apper);
+
+$apper->counter();
+
+var_dump($apper);

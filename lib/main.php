@@ -11,17 +11,17 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "application.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "staticapplication.php";
 
 /**
- * Create Apper\Application.
+ * Create Apper.
  */
-function apper( $mainFunction, array $binds = array() )
+function apper( array $binds = array(), array $prototype = array() )
 {
-	return new Apper\Application( $mainFunction, $binds);
+	return new Apper( $binds, $prototype );
 }
 
 /**
  * Create Class which extends Apper\StaticApplication.
  */
-function staticApper( $staticName, $mainFunction, $binds = array() )
+function staticApper( $staticName, $binds = array(), $prototype = array(), $runFuncTemplate = null, $args = array() )
 {
 	$nameParts = explode("\\", $staticName);
 
@@ -44,7 +44,5 @@ function staticApper( $staticName, $mainFunction, $binds = array() )
 				'class ' . $className . ' extends \Apper\StaticApplication {}'
 		);
 
-	$binds = array_merge( array("name"=>$staticName), $binds );
-
-	return $staticName::init( $mainFunction, $binds );
+	return $staticName::init( $binds, $prototype, $runFuncTemplate, $args );
 }
